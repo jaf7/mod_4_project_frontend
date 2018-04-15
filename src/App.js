@@ -33,10 +33,23 @@ class App extends Component {
   }
 
   showProject = (id, parent) => {
-    console.log( `project clicked: ${JSON.stringify( this.state.projects.find(project => project.id === id) )}` )
+    // console.log( `project clicked: ${JSON.stringify( this.state.projects.find(project => project.id === id) )}` )
+    this.getProjects()
     this.setState({
-      currentProject: this.state.projects.find(project => project.id === id)
-    }, () => console.log(`currentProject in setState callback: ${JSON.stringify(this.state.currentProject)}`))
+      currentProject: this.state.projects.find(project => project.id === id),
+    }) //, () => console.log(`currentProject in setState callback: ${JSON.stringify(this.state.currentProject)}`))
+  }
+
+  updateProject = (currentContents, project_id) => {
+    // console.log(currentContents)
+    fetch(`${API_ROOT}/projects/${project_id}`, {
+      method: 'PATCH',
+      headers: HEADERS,
+      body: JSON.stringify( {body: currentContents} )
+    })
+    .then(res => res.json())
+    .then(json => console.log(`updateProject response: ${json.body}`))
+
   }
 
   render() {
@@ -48,7 +61,7 @@ class App extends Component {
 
           {/*wrapped in main view css*/}
             {/*Intro, Project, Search*/}
-            {this.state.currentProject ? <Project currentProject={this.state.currentProject} /> : null }
+            <Project project={this.state.currentProject || {} } updateProject={this.updateProject} />
           {/*wrapped in sidebar css*/}
         </div>
     );
