@@ -1,4 +1,5 @@
 import React from 'react'
+import { API_ROOT, HEADERS } from '../constants'
 
 class ProjectList extends React.Component {
   constructor(props) {
@@ -11,8 +12,9 @@ class ProjectList extends React.Component {
   }
 
   getProjects() {
-    fetch('API_ROOT', {
-      method: 'GET'
+    fetch(`${API_ROOT}/projects`, {
+      method: 'GET',
+      headers: HEADERS
     })
     .then(res => res.json())
     .then(json => console.log(json))
