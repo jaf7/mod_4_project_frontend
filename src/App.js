@@ -6,12 +6,14 @@ import { API_ROOT, HEADERS } from './constants'
 // } from 'react-router-dom'
 
 import ProjectsList from './components/ProjectsList'
+import Project from './components/Project'
 
 class App extends Component {
   constructor() {
     super()
     this.state = {
-      projects: []
+      projects: [],
+      currentProject: null
     }
   }
 
@@ -32,7 +34,10 @@ class App extends Component {
 
   showProject = (id, parent) => {
     console.log( `project clicked: ${JSON.stringify( this.state.projects.find(project => project.id === id) )}` )
-    // this.setState ?
+    this.setState({
+      currentProject: this.state.projects.find(project => project.id === id)
+    }, console.log(this.state.currentProject))
+    console.log(this.state.currentProject)
   }
 
   render() {
@@ -44,6 +49,7 @@ class App extends Component {
 
           {/*wrapped in main view css*/}
             {/*Intro, Project, Search*/}
+            {this.state.currentProject ? <Project currentProject={this.state.currentProject} /> : null }
           {/*wrapped in sidebar css*/}
         </div>
     );
