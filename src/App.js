@@ -4,7 +4,9 @@ import React, { Component } from 'react';
 import {
   BrowserRouter as Router,
   Route
-} from 'react-router-dom';
+} from 'react-router-dom'
+
+import ProjectsList from './components/ProjectsList'
 
 class App extends Component {
   render() {
