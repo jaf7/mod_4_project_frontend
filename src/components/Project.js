@@ -34,10 +34,11 @@ class Project extends React.Component {
               indentUnit: 2
             }}
             onBeforeChange={(editor, data, value) => {
-              this.setState({body: value});
+              this.setState({body: value})
             }}
             onChange={(editor, data, value) => {
               console.log(this.state.body)
+              this
             }}
           />
         </Segment>
