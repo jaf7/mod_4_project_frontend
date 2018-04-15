@@ -36,8 +36,7 @@ class App extends Component {
     console.log( `project clicked: ${JSON.stringify( this.state.projects.find(project => project.id === id) )}` )
     this.setState({
       currentProject: this.state.projects.find(project => project.id === id)
-    }, console.log(this.state.currentProject))
-    console.log(this.state.currentProject)
+    }, () => console.log(`currentProject in setState callback: ${JSON.stringify(this.state.currentProject)}`))
   }
 
   render() {
