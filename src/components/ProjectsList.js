@@ -1,33 +1,32 @@
 import React from 'react'
-import { API_ROOT, HEADERS } from '../constants'
 
-class ProjectList extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {}
-  }
+// imports for react-sidenav
+import SideNav, { Nav, NavIcon, NavText } from 'react-sidenav';
+import SvgIcon from 'react-icons-kit';
+import { ic_aspect_ratio } from 'react-icons-kit/md/ic_aspect_ratio';
+// import { ic_business } from 'react-icons-kit/md/ic_business';
 
-  componentDidMount() {
-    this.getProjects()
-  }
+const ProjectList = (props) => {
 
-  getProjects() {
-    fetch(`${API_ROOT}/projects`, {
-      method: 'GET',
-      headers: HEADERS
-    })
-    .then(res => res.json())
-    .then(json => console.log(json))
-  }
+  // properties are project id, title, users
 
+  return (
+  
+    <div>
+      {
+        props.projects.map(project =>
+        <div style={{background: '#2c3e50', color: '#FFF', width: 220, height: 'auto'}} key={project.id}> 
+          <SideNav highlightColor='#E91E63' highlightBgColor='#00bcd4' onItemSelection={() => (props.showProject(project.id))} >       
+              <Nav id='project.id'>
+                  <NavIcon><SvgIcon size={20} icon={ic_aspect_ratio}/></NavIcon>    
+                  <NavText> {project.title} </NavText>
+              </Nav>
+          </SideNav>
+        </div>)
+      }
+    </div>
 
-  render() {
-    return (
-    
-      <div></div>
-
-    )
-  }
+  )
 }
 
 export default ProjectList
