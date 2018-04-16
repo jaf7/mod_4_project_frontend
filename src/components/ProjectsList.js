@@ -7,11 +7,9 @@ import { ic_aspect_ratio } from 'react-icons-kit/md/ic_aspect_ratio';
 // import { ic_business } from 'react-icons-kit/md/ic_business';
 
 const ProjectList = (props) => {
-
   // properties are project id, title, users
 
   return (
-  
     <div>
       {
         props.projects.map(project =>
