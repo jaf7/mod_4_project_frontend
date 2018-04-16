@@ -29,7 +29,7 @@ class App extends Component {
     .then(res => res.json())
     .then(json => this.setState({
       projects: json
-    }) //, () => console.log(`json[0].updated_at in getProjects: ${json[0].created_at}`)))
+    })) //, () => console.log(`json[0].updated_at in getProjects: ${json[0].created_at}`)))
   }
 
   showProject = (id, parent) => {
