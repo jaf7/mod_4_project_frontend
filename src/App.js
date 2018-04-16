@@ -4,6 +4,8 @@ import { API_ROOT, HEADERS } from './constants'
 //   BrowserRouter as Router,
 //   Route
 // } from 'react-router-dom'
+import { ActionCable } from 'react-actioncable-provider'
+// import Cable from './Cable'
 
 import ProjectsList from './components/ProjectsList'
 import Project from './components/Project'
@@ -49,12 +51,26 @@ class App extends Component {
     })
     .then(res => res.json())
     .then(json => console.log(`updateProject response: ${json.body}`))
-
   }
+
+  handleReceivedProject = response => {
+    const { project } = response;
+    console.log(`project.body from received response: ${project.body}`)
+    this.setState({
+      // projects: [...this.state.projects, project]
+      currentProject: project
+    });
+  };
 
   render() {
     return (
         <div>
+
+          <ActionCable
+            channel={{ channel: 'ProjectsChannel' }}
+            onReceived={this.handleReceivedProject}
+          /> 
+
           {/*wrapped in sidebar css*/}
             <ProjectsList projects={this.state.projects} showProject={this.showProject} />
           {/*wrapped in sidebar css*/}
@@ -63,6 +79,7 @@ class App extends Component {
             {/*Intro, Project, Search*/}
             <Project project={this.state.currentProject || {} } updateProject={this.updateProject} />
           {/*wrapped in sidebar css*/}
+
         </div>
     );
   }
