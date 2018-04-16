@@ -4,6 +4,8 @@ import { API_ROOT, HEADERS } from './constants'
 //   BrowserRouter as Router,
 //   Route
 // } from 'react-router-dom'
+import { ActionCable } from 'react-actioncable-provider'
+// import Cable from './Cable'
 
 import ProjectsList from './components/ProjectsList'
 import Project from './components/Project'
@@ -29,27 +31,55 @@ class App extends Component {
     .then(res => res.json())
     .then(json => this.setState({
       projects: json
-    }))
+    })) //, () => console.log(`json[0].updated_at in getProjects: ${json[0].created_at}`)))
   }
 
   showProject = (id, parent) => {
-    console.log( `project clicked: ${JSON.stringify( this.state.projects.find(project => project.id === id) )}` )
+    // console.log( `project clicked: ${JSON.stringify( this.state.projects.find(project => project.id === id) )}` )
+    this.getProjects()
     this.setState({
-      currentProject: this.state.projects.find(project => project.id === id)
-    }, () => console.log(`currentProject in setState callback: ${JSON.stringify(this.state.currentProject)}`))
+      currentProject: this.state.projects.find(project => project.id === id),
+    }) //, () => console.log(`currentProject in setState callback: ${JSON.stringify(this.state.currentProject)}`))
   }
+
+  updateProject = (currentContents, project_id) => {
+    // console.log(currentContents)
+    fetch(`${API_ROOT}/projects/${project_id}`, {
+      method: 'PATCH',
+      headers: HEADERS,
+      body: JSON.stringify( {body: currentContents} )
+    })
+    .then(res => res.json())
+    .then(json => console.log(`updateProject response: ${json.body}`))
+  }
+
+  handleReceivedProject = response => {
+    const { project } = response;
+    console.log(`project.body from received response: ${project.body}`)
+    this.setState({
+      // projects: [...this.state.projects, project]
+      currentProject: project
+    });
+  };
 
   render() {
     return (
         <div>
+
+          <ActionCable
+            channel={{ channel: 'ProjectsChannel' }}
+            onReceived={this.handleReceivedProject}
+          /> 
+
           {/*wrapped in sidebar css*/}
             <ProjectsList projects={this.state.projects} showProject={this.showProject} />
           {/*wrapped in sidebar css*/}
 
           {/*wrapped in main view css*/}
             {/*Intro, Project, Search*/}
-            {this.state.currentProject ? <Project currentProject={this.state.currentProject} /> : null }
+            <Project project={this.state.currentProject || {} } updateProject={this.updateProject} />
           {/*wrapped in sidebar css*/}
+
         </div>
     );
   }
