@@ -1,21 +1,29 @@
 import React from 'react'
 import { Form, Button, Header, Icon, Modal } from 'semantic-ui-react'
 
-class NewProjectModal extends React.Component {
+export default class NewProjectModal extends React.Component {
   constructor() {
     super()
+
     this.state = {
-      formContents: ''
+      formContents: '',
+      isOpen: false
     }
   }
+
+  handleOpen = () => this.setState({ isOpen: true })
+
+  handleClose = () => this.setState({ isOpen: false })
 
   udpateFormValue = (e) => {
     this.setState({
       formContents: e.target.value
-      })
+    })
   }
 
   handleClick = (e) => {
+    // e.preventDefault()
+    this.handleClose()
     this.props.createProject(this.state.formContents)
   }
 
@@ -23,13 +31,13 @@ class NewProjectModal extends React.Component {
     return (
 
       <Modal trigger={
-           <Button animated color="green" >
+           <Button animated color="green" onClick={this.handleOpen} >
               <Button.Content visible>New Project</Button.Content>
               <Button.Content hidden>
                 <Icon name='code' />
               </Button.Content>
             </Button>
-        } basic size='small'>
+        } open={this.state.isOpen} onClose={this.handleClose} basic size='small'>
         <Header icon='edit' content='Create New Project' />
         <Modal.Content>
           <Form onChange={this.udpateFormValue} >
@@ -49,5 +57,3 @@ class NewProjectModal extends React.Component {
     )
   }
 }
-
-export default NewProjectModal
