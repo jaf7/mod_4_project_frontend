@@ -6,16 +6,18 @@ import { API_ROOT, HEADERS } from './constants'
 // } from 'react-router-dom'
 import { ActionCable } from 'react-actioncable-provider'
 // import Cable from './Cable'
+import { Button, Icon } from 'semantic-ui-react'
 
 import ProjectsList from './components/ProjectsList'
 import Project from './components/Project'
+import NewProjectModal from './components/NewProjectModal'
 
 class App extends Component {
   constructor() {
     super()
     this.state = {
       projects: [],
-      currentProject: null
+      currentProject: {}
     }
   }
 
@@ -49,17 +51,26 @@ class App extends Component {
       headers: HEADERS,
       body: JSON.stringify( {body: currentContents} )
     })
-    .then(res => res.json())
-    .then(json => console.log(`updateProject response: ${json.body}`))
+    // .then(res => res.json())
+    // .then(json => console.log(`updateProject response: ${json.body}`))
+  }
+
+  createProject = (projectTitle) => {
+
+    console.log(`proj name in create: ${projectTitle}`)
+    fetch(`${API_ROOT}/projects`, {
+      method: 'POST',
+      headers: HEADERS,
+      body: JSON.stringify( {title: projectTitle} )
+    })
+    // .then(res => res.json())
+    // .then(json => () => console.log(`createProject res: ${json.title}`))
   }
 
   handleReceivedProject = response => {
     const { project } = response;
-    console.log(`project.body from received response: ${project.body}`)
-    this.setState({
-      // projects: [...this.state.projects, project]
-      currentProject: project
-    });
+    console.log(`project.id in handle receive: ${project.id}`)
+    project.id === this.state.currentProject.id ? this.setState({currentProject: project}) : this.getProjects()
   };
 
   render() {
@@ -79,6 +90,8 @@ class App extends Component {
             {/*Intro, Project, Search*/}
             <Project project={this.state.currentProject || {} } updateProject={this.updateProject} />
           {/*wrapped in sidebar css*/}
+
+          <NewProjectModal createProject={this.createProject} />
 
         </div>
     );
