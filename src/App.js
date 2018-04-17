@@ -8,7 +8,8 @@ import { ActionCable } from 'react-actioncable-provider'
 // import Cable from './Cable'
 import { Button, Icon } from 'semantic-ui-react'
 
-import ProjectsList from './components/ProjectsList'
+// import ProjectsList from './components/ProjectsList'
+import ProjectListWrapper from './components/ProjectListWrapper'
 import Project from './components/Project'
 import NewProjectModal from './components/NewProjectModal'
 
@@ -83,7 +84,8 @@ class App extends Component {
           /> 
 
           {/*wrapped in sidebar css*/}
-            <ProjectsList projects={this.state.projects} showProject={this.showProject} />
+            <ProjectListWrapper projects={this.state.projects} showProject={this.showProject} />
+            {/*<ProjectsList projects={this.state.projects} showProject={this.showProject} />*/}
           {/*wrapped in sidebar css*/}
 
           {/*wrapped in main view css*/}
