@@ -1,4 +1,6 @@
 import React from 'react'
+import { Button, Icon } from 'semantic-ui-react'
+
 import ProjectsList from './ProjectsList'
 
 
@@ -52,41 +54,49 @@ const Separator = styled.div`
 
 const ProjectListWrapper = (props) => {
   return (
-    <div>
-      <BaseContainer
-        style={{
-            fontSize: 12,
-            background: '#2d353c',
-            color: '#a8acb1',
-            paddingTop: 0
-        }}>
-        <div style={{ display: 'flex', padding: 16, background: '#1a2229' }}>
-            <div style={{ width: 40, height: 40 }}>
-                <img
-                    src="code_logo.jpeg"
-                    style={{ borderRadius: '30px', width: 40, height: 40 }}
-                />
-            </div>
-            <div style={{ paddingLeft: 6, paddingTop: 6 }}>
-                <div style={{ fontSize: 12, color: '#E5E5E5' }}>
-                    {' '}Editr{' '}
-                </div>
-                <div style={{ fontSize: 11 }}> Parallel Coding Editor </div>
-            </div>
-        </div>
-      </BaseContainer>
-      <Separator />
-      <BaseContainer
-        style={{
-            background: '#474C56',
-            color: '#444',
-            boxShadow: '0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)'
-        }}>
+      <div style={{'height':'540px', 'overflow-y': 'auto', 'overflow-x':'hidden', 'width':'20rem'}} >
+        <BaseContainer
+          style={{
+              fontSize: 12,
+              background: '#2d353c',
+              color: '#a8acb1',
+              paddingTop: 0
+          }}>
+          <div style={{ display: 'flex', padding: 16, background: '#1a2229' }}>
+              <div style={{ width: 40, height: 40 }}>
+                  <img
+                      src="code_logo.jpg"
+                      style={{ borderRadius: '30px', width: 40, height: 40 }}
+                  />
+              </div>
+              <div style={{ paddingLeft: 6, paddingTop: 6 }}>
+                  <div style={{ fontSize: 12, color: '#E5E5E5' }}>
+                      {' '}Editr{' '}
+                  </div>
+                  <div style={{ fontSize: 11 }}> Parallel Coding Editor </div>
+              </div>
+          </div>
+        </BaseContainer>
+        <Separator />
+        <Separator />
+        <BaseContainer
+          style={{
+              background: '#474C56',
+              color: '#444',
+              boxShadow: '0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)'
+          }}>
 
-        <ProjectsList projects={props.projects} showProject={props.showProject} />
+          <Button animated fluid inverted color="green" onClick={props.handleModalOpen} >
+            <Button.Content visible>New Project</Button.Content>
+            <Button.Content hidden>
+              <Icon name='code' />
+            </Button.Content>
+          </Button>
 
-      </BaseContainer>
-    </div>
+          <ProjectsList projects={props.projects} showProject={props.showProject} />
+
+        </BaseContainer>
+      </div>
   )
 }
 

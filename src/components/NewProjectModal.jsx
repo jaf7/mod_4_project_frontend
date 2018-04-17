@@ -6,14 +6,9 @@ export default class NewProjectModal extends React.Component {
     super()
 
     this.state = {
-      formContents: '',
-      isOpen: false
+      formContents: ''
     }
   }
-
-  handleOpen = () => this.setState({ isOpen: true })
-
-  handleClose = () => this.setState({ isOpen: false })
 
   udpateFormValue = (e) => {
     this.setState({
@@ -22,22 +17,14 @@ export default class NewProjectModal extends React.Component {
   }
 
   handleClick = (e) => {
-    // e.preventDefault()
-    this.handleClose()
     this.props.createProject(this.state.formContents)
+    this.props.handleModalClose()
   }
 
   render() {
     return (
 
-      <Modal trigger={
-           <Button animated color="green" onClick={this.handleOpen} >
-              <Button.Content visible>New Project</Button.Content>
-              <Button.Content hidden>
-                <Icon name='code' />
-              </Button.Content>
-            </Button>
-        } open={this.state.isOpen} onClose={this.handleClose} basic size='small'>
+      <Modal open={this.props.modalState} basic size='small'>
         <Header icon='edit' content='Create New Project' />
         <Modal.Content>
           <Form onChange={this.udpateFormValue} >
@@ -57,3 +44,4 @@ export default class NewProjectModal extends React.Component {
     )
   }
 }
+
