@@ -36,13 +36,14 @@ class Project extends React.Component {
     })
   }
 
+  // create grid to contain editor (semantic)
   render() {
-    // if (!this.state.body) return null
-    // console.log(`body in Project render(): ${this.state.body}`)
     return (
-      <div className="ui container" style={{'marginTop':'1rem'}}>
-        <Segment raised>
-          <CodeMirror
+
+        <div class="ui card" style={{'width':'100%', 'padding':'.5rem 0 0 0', 'margin-top': '.5rem'}} >
+          <div class="content" style={{'padding':'0'}} >
+            <div class="center aligned header">Title</div>
+          <CodeMirror style={{'height':'40rem'}}
             value={this.state.currentContents}
             options={{
               mode: 'jsx',
@@ -60,8 +61,9 @@ class Project extends React.Component {
               // console.log(`body: ${this.props.project.body}`, `data.text: ${data.text}`, `editor.state: ${Object.keys(editor.state)}`)
             }}
            />
-        </Segment>
-      </div>
+           </div>
+           </div>
+
     );
   }
 }

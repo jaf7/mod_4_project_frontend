@@ -7,6 +7,7 @@ import { API_ROOT, HEADERS } from './constants'
 import { ActionCable } from 'react-actioncable-provider'
 // import Cable from './Cable'
 import { Button, Icon } from 'semantic-ui-react'
+import { Segment } from 'semantic-ui-react'
 
 // import ProjectsList from './components/ProjectsList'
 import ProjectListWrapper from './components/ProjectListWrapper'
@@ -18,7 +19,8 @@ class App extends Component {
     super()
     this.state = {
       projects: [],
-      currentProject: {}
+      currentProject: {},
+      modalState: false
     }
   }
 
@@ -74,6 +76,8 @@ class App extends Component {
     project.id === this.state.currentProject.id ? this.setState({currentProject: project}) : this.getProjects()
   };
 
+  handleModalClick = () => { this.setState({ modalState: !this.state.modalState }) }
+
   render() {
     return (
         <div>
@@ -82,18 +86,27 @@ class App extends Component {
             channel={{ channel: 'ProjectsChannel' }}
             onReceived={this.handleReceivedProject}
           /> 
+          
+          <div className="ui grid noMargin">
+            <div className="three wide column">
+              {/*wrapped in sidebar css*/}
+                <ProjectListWrapper projects={this.state.projects} showProject={this.showProject} handleModalOpen={this.handleModalClick} />
+                {/*<ProjectsList projects={this.state.projects} showProject={this.showProject} />*/}
+              {/*wrapped in sidebar css*/}
+            </div>
+            <div className="nine wide column" style={{'padding-left':'0', 'padding-top':'.6rem'}} >
+              {/*wrapped in main view css*/}
+                {/*Intro, Project, Search*/}
+                {/*<Segment raised style={{'padding':'5px', 'text-align':'center', 'margin-bottom':'0'}} ><h2>Title</h2></Segment>*/}
+                <Project project={this.state.currentProject || {} } updateProject={this.updateProject} />
+              {/*wrapped in sidebar css*/}
+            </div>
+            <div className="four wide column">
+              <p>Chat goes here</p>
+            </div>
+          </div>
 
-          {/*wrapped in sidebar css*/}
-            <ProjectListWrapper projects={this.state.projects} showProject={this.showProject} />
-            {/*<ProjectsList projects={this.state.projects} showProject={this.showProject} />*/}
-          {/*wrapped in sidebar css*/}
-
-          {/*wrapped in main view css*/}
-            {/*Intro, Project, Search*/}
-            <Project project={this.state.currentProject || {} } updateProject={this.updateProject} />
-          {/*wrapped in sidebar css*/}
-
-          <NewProjectModal createProject={this.createProject} />
+          <NewProjectModal modalState={this.state.modalState} handleModalClose={this.handleModalClick} createProject={this.createProject} />
 
         </div>
     );
