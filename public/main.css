@@ -3,5 +3,44 @@
 }*/
 
 .cm-s-ambiance.CodeMirror {
-  height: 510px;
+  height: 512px;
+}
+
+div.widget-container.opened {
+  bottom: 0;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-direction: column;
+      flex-direction: column;
+  margin: 0 6px 20px 0;
+  max-width: 330px;
+  /*position: fixed;*/
+  position: fixed;
+  right: 0;
+  z-index: 9999;
+}
+
+div.conversation-container > div.header {
+  background-color: #19222A;
+}
+
+div.conversation-container > div.header h4.title {
+  font-family: 'Roboto', sans-serif;
+  font-size: 18px;
+  margin: 0;
+  padding: 15px 0;
+}
+
+.messages-container {
+  background-color: #616161;
+  height: 50vh;
+  max-height: 410px;
+  overflow-y: scroll;
+  padding-top: 10px;
+}
+
+.message > .response {
+  font-family: 'Roboto', sans-serif;
+  background-color: #474C56;
+  color: white;
 }

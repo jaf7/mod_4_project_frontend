@@ -2,7 +2,7 @@ import React from 'react'
 import { Button, Icon } from 'semantic-ui-react'
 
 import ProjectsList from './ProjectsList'
-
+import code_logo from '../code_logo.jpg'
 
 // imports for react-sidenav
 // import SideNav, { Nav, NavIcon, NavText } from 'react-sidenav'
@@ -19,7 +19,7 @@ const BaseContainer = (props) => {
             paddingTop: 16,
             paddingBottom: 16,
             fontFamily: 'Roboto',
-            width: 240,
+            width: 260,
             ...props.style
         }}
     >
@@ -54,7 +54,7 @@ const Separator = styled.div`
 
 const ProjectListWrapper = (props) => {
   return (
-      <div style={{'height':'540px', 'overflow-y': 'auto', 'overflow-x':'hidden', 'width':'20rem'}} >
+      <div style={{'height':'540px', 'overflowY': 'auto', 'overflowX':'hidden', 'width':'20rem'}} >
         <BaseContainer
           style={{
               fontSize: 12,
@@ -65,7 +65,8 @@ const ProjectListWrapper = (props) => {
           <div style={{ display: 'flex', padding: 16, background: '#1a2229' }}>
               <div style={{ width: 40, height: 40 }}>
                   <img
-                      src="code_logo.jpg"
+                      src={code_logo}
+                      alt="logo"
                       style={{ borderRadius: '30px', width: 40, height: 40 }}
                   />
               </div>
@@ -81,12 +82,12 @@ const ProjectListWrapper = (props) => {
         <Separator />
         <BaseContainer
           style={{
-              background: '#474C56',
+              background: '#4D5250',
               color: '#444',
               boxShadow: '0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)'
           }}>
 
-          <Button animated fluid inverted color="green" onClick={props.handleModalOpen} >
+          <Button animated inverted color="orange" onClick={props.handleModalOpen} >
             <Button.Content visible>New Project</Button.Content>
             <Button.Content hidden>
               <Icon name='code' />

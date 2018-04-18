@@ -14,7 +14,7 @@ const ProjectList = (props) => {
       {
         props.projects.map(project =>
         <div  key={project.id}> 
-          <SideNav highlightColor='#C8CACC' highlightBgColor='#484D56' hoverColor='#FFFFFF' hoverBgColor='#31343B' defaultSelected={`${project.id}`} onItemSelection={() => props.showProject(project.id)} >
+          <SideNav highlightColor='#C8CACC' highlightBgColor='#484D56' hoverColor='#FFFFFF' hoverBgColor='#D39B46' selected={`${project.id}`} onItemSelection={() => props.showProject(project.id)} >
               <Nav id={`${project.id}`} >
                   <NavIcon><SvgIcon size={20} icon={ic_aspect_ratio}/></NavIcon>    
                   <NavText> {project.title} </NavText>

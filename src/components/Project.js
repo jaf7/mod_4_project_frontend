@@ -1,7 +1,7 @@
 import React from 'react'
 
 import {Controlled as CodeMirror} from 'react-codemirror2'
-import { Segment } from 'semantic-ui-react'
+// import { Segment } from 'semantic-ui-react'
 
 import 'codemirror/lib/codemirror.css';
 import 'codemirror/theme/material.css';
@@ -36,15 +36,14 @@ class Project extends React.Component {
     })
   }
 
-  // create grid to contain editor (semantic)
   render() {
     return (
 
-        <div class="ui card" style={{'width':'100%', 'padding':'.5rem 0 0 0', 'margin-top': '.5rem'}} >
-          <div class="content" style={{'padding':'0'}} >
-            <div class="center aligned header">Title</div>
+        <div className="ui card" style={{'width':'100%', 'padding':'.5rem 0 0 0', 'marginTop': '.5rem'}} >
+          <div className="content" style={{'padding':'0'}} >
+            <div className="center aligned header">{this.props.title ? this.props.title : 'Editr'}</div>
           <CodeMirror style={{'height':'40rem'}}
-            value={this.state.currentContents}
+            value={this.state.currentContents ? this.state.currentContents : 'Hello World'}
             options={{
               mode: 'jsx',
               theme: 'ambiance',
@@ -61,8 +60,8 @@ class Project extends React.Component {
               // console.log(`body: ${this.props.project.body}`, `data.text: ${data.text}`, `editor.state: ${Object.keys(editor.state)}`)
             }}
            />
-           </div>
-           </div>
+         </div>
+       </div>
 
     );
   }

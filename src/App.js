@@ -6,13 +6,19 @@ import { API_ROOT, HEADERS } from './constants'
 // } from 'react-router-dom'
 import { ActionCable } from 'react-actioncable-provider'
 // import Cable from './Cable'
-import { Button, Icon } from 'semantic-ui-react'
-import { Segment } from 'semantic-ui-react'
+// import { Button, Icon } from 'semantic-ui-react'
+// import { Segment } from 'semantic-ui-react'
+
+import { Widget, addResponseMessage } from 'react-chat-widget'
+import 'react-chat-widget/lib/styles.css'
+import uuid from 'uuid/v1'
 
 // import ProjectsList from './components/ProjectsList'
 import ProjectListWrapper from './components/ProjectListWrapper'
 import Project from './components/Project'
 import NewProjectModal from './components/NewProjectModal'
+
+const senderId = uuid()
 
 class App extends Component {
   constructor() {
@@ -21,11 +27,13 @@ class App extends Component {
       projects: [],
       currentProject: {},
       modalState: false
+      // senderId: ''
     }
   }
 
   componentDidMount() {
     this.getProjects()
+    addResponseMessage("I have no idea what I'm doing :P")
   }
 
   getProjects = () => {
@@ -36,15 +44,14 @@ class App extends Component {
     .then(res => res.json())
     .then(json => this.setState({
       projects: json
-    })) //, () => console.log(`json[0].updated_at in getProjects: ${json[0].created_at}`)))
+    }))
   }
 
   showProject = (id, parent) => {
-    // console.log( `project clicked: ${JSON.stringify( this.state.projects.find(project => project.id === id) )}` )
     this.getProjects()
     this.setState({
       currentProject: this.state.projects.find(project => project.id === id),
-    }) //, () => console.log(`currentProject in setState callback: ${JSON.stringify(this.state.currentProject)}`))
+    })
   }
 
   updateProject = (currentContents, project_id) => {
@@ -54,8 +61,6 @@ class App extends Component {
       headers: HEADERS,
       body: JSON.stringify( {body: currentContents} )
     })
-    // .then(res => res.json())
-    // .then(json => console.log(`updateProject response: ${json.body}`))
   }
 
   createProject = (projectTitle) => {
@@ -66,15 +71,32 @@ class App extends Component {
       headers: HEADERS,
       body: JSON.stringify( {title: projectTitle} )
     })
-    // .then(res => res.json())
-    // .then(json => () => console.log(`createProject res: ${json.title}`))
   }
 
   handleReceivedProject = response => {
-    const { project } = response;
-    console.log(`project.id in handle receive: ${project.id}`)
+    const { project } = response
     project.id === this.state.currentProject.id ? this.setState({currentProject: project}) : this.getProjects()
-  };
+  }
+
+  handleReceivedMessage = response => {
+    const { message } = response
+    // console.log(`this.state.senderId in handleReceived: ${this.state.senderId}`) // out of date, doesn't match
+    // console.log(typeof(this.state.senderId))
+    // console.log(`sender id in response: ${message.sender_id}`)
+    // console.log(typeof(message.sender_id))
+    // message.sender_id !== this.state.senderId ? addResponseMessage(message.text) : null
+    message.sender_id !== senderId ? addResponseMessage(message.text) : null
+  }
+
+  handleNewUserMessage = (newMessage) => {
+    // console.log(`newMessage: ${newMessage}`)
+    // this.setState({senderId: uuid()}, console.log(`this.state.senderId in handleNew: ${this.state.senderId}`))
+    fetch(`${API_ROOT}/messages`, {
+      method: 'POST',
+      headers: HEADERS,
+      body: JSON.stringify( {text: newMessage, sender_id: senderId} )
+    })
+  }
 
   handleModalClick = () => { this.setState({ modalState: !this.state.modalState }) }
 
@@ -85,25 +107,32 @@ class App extends Component {
           <ActionCable
             channel={{ channel: 'ProjectsChannel' }}
             onReceived={this.handleReceivedProject}
-          /> 
-          
+          />
+
+          <ActionCable
+            channel={{ channel: 'MessagesChannel'}}
+            onReceived={this.handleReceivedMessage}
+          />
+
           <div className="ui grid noMargin">
+
             <div className="three wide column">
-              {/*wrapped in sidebar css*/}
                 <ProjectListWrapper projects={this.state.projects} showProject={this.showProject} handleModalOpen={this.handleModalClick} />
-                {/*<ProjectsList projects={this.state.projects} showProject={this.showProject} />*/}
-              {/*wrapped in sidebar css*/}
             </div>
-            <div className="nine wide column" style={{'padding-left':'0', 'padding-top':'.6rem'}} >
-              {/*wrapped in main view css*/}
-                {/*Intro, Project, Search*/}
-                {/*<Segment raised style={{'padding':'5px', 'text-align':'center', 'margin-bottom':'0'}} ><h2>Title</h2></Segment>*/}
-                <Project project={this.state.currentProject || {} } updateProject={this.updateProject} />
-              {/*wrapped in sidebar css*/}
+
+            <div className="nine wide column" style={{'paddingLeft':'0', 'paddingTop':'.6rem'}} >
+              {/*Intro, Project, Search*/}
+              <Project project={this.state.currentProject || {} } title={this.state.currentProject.title} updateProject={this.updateProject} />
             </div>
+
             <div className="four wide column">
-              <p>Chat goes here</p>
+              <Widget 
+                handleNewUserMessage={this.handleNewUserMessage}
+                title="Editr  Chat"
+                subtitle=""
+              />
             </div>
+
           </div>
 
           <NewProjectModal modalState={this.state.modalState} handleModalClose={this.handleModalClick} createProject={this.createProject} />
